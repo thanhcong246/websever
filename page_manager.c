@@ -37,7 +37,7 @@ void add_page() {
 
     // Create an HTML file with the given title and content
     char file_path[BUFFER_SIZE * 2];  // Increase buffer size
-    snprintf(file_path, sizeof(file_path), "/home/connguyen/Desktop/HTTP-Server%s.html", title);
+    snprintf(file_path, sizeof(file_path), "/home/connguyen/Desktop/HTTP-Server/%s.html", title);
 
     FILE *file = fopen(file_path, "w");
     if (file == NULL) {
@@ -62,7 +62,7 @@ void edit_page() {
 
     // Create the path to the HTML file
     char file_path[BUFFER_SIZE * 2];
-    snprintf(file_path, sizeof(file_path), "/home/connguyen/Desktop/HTTP-Server%s.html", title);
+    snprintf(file_path, sizeof(file_path), "/home/connguyen/Desktop/HTTP-Server/%s.html", title);
 
     // Check if the file exists
     FILE *file = fopen(file_path, "r");
@@ -94,11 +94,12 @@ void edit_page() {
     }
 
     // Write the new content to the file
-    fprintf(file, "<html>\n<head>\n<title>%s</title>\n</head>\n<body>\n%s\n</body>\n</html>\n", title, new_content);
+    fprintf(file, "%s", new_content);
 
     fclose(file);
-    printf("Page edited successfully!\n");
+    printf("Page content edited successfully!\n");
 }
+
 
 // Delete page function
 void delete_page() {
@@ -110,30 +111,16 @@ void delete_page() {
 
     // Create the path to the HTML file
     char file_path[BUFFER_SIZE * 2];
-    snprintf(file_path, sizeof(file_path), "/home/connguyen/Desktop/HTTP-Server%s.html", title);
+    snprintf(file_path, sizeof(file_path), "/home/connguyen/Desktop/HTTP-Server/%s.html", title);
 
     // Check if the file exists
-    if (access(file_path, F_OK) == -1) {
-        perror("Error: Page not found");
-        return;
-    }
-
-    // Display a confirmation prompt for deleting the page
-    printf("Are you sure you want to delete the page '%s'? (y/n): ", title);
-    char confirmation;
-    scanf(" %c", &confirmation);  // Read the character and discard the newline character from the buffer
-
-    if (confirmation == 'y' || confirmation == 'Y') {
-        // Use the remove function to delete the file
-        if (remove(file_path) == 0) {
-            printf("Page deleted successfully!\n");
-        } else {
-            perror("Error deleting the page");
-        }
+    if (remove(file_path) == 0) {
+        printf("Page deleted successfully!\n");
     } else {
-        printf("Deletion canceled.\n");
+        perror("Error deleting the page");
     }
 }
+
 
 // Function to block a page
 void block_page() {
